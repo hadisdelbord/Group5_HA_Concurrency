@@ -137,7 +137,13 @@ public class EnergyManagementSystem {
 					int power = scanner.nextInt();
 
 					EnergySource es = new EnergySource(name, power);
-					// TODO: We can prevent duplicate names
+					for (EnergySource e : energySources) {
+						if (e.getName().equals(name)) {
+							System.err.println("The energy source already exists");
+							break;
+						}
+					}
+
 					energySources.add(es);
 					System.out.println("EnergySource '" + es.getName() + "' with power " + es.getPower() + " added");
 					break;
@@ -155,7 +161,13 @@ public class EnergyManagementSystem {
 					int capacity = scanner.nextInt();
 
 					Battery battery = new Battery(name, capacity);
-					// TODO: We can prevent duplicate names
+					for (Battery b : batteries) {
+						if (b.getName().equals(name)) {
+							System.err.println("The battery already exists");
+							break;
+						}
+
+					}
 					batteries.add(battery);
 					System.out.println(battery + " added.");
 					break;

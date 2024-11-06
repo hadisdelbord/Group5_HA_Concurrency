@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 public class Battery {
 	private String name;
 	private int capacity; // KW
-	private int currentCharge; // KW
+	private double currentCharge; // KW
 	private EnergySource energySource;
 
 	public Battery(String name, int capacity) {
@@ -47,8 +47,7 @@ public class Battery {
 		ExecutorService executor = Executors.newFixedThreadPool(3);
 		executor.submit(() -> {
 			while (true) {
-				// TODO: Because of divide it is better to use double instead of integer
-				int amount = this.energySource.getPower() / 3600;
+				double amount = this.energySource.getPower() / 3600;
 				if (amount <= 0) {
 					System.err.println("Amount charge is invalid!");
 					return;
@@ -89,7 +88,7 @@ public class Battery {
 		}
 	}
 
-	public int getCurrentCharge() {
+	public double getCurrentCharge() {
 		return currentCharge;
 	}
 }
