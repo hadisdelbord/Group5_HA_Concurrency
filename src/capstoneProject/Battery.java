@@ -5,7 +5,6 @@ import java.util.concurrent.Executors;
 
 
 
-
 public class Battery {
 	private String name;
 	private int capacity; // KW
@@ -56,6 +55,7 @@ public class Battery {
 					currentCharge += amount;
 					System.out.println(Thread.currentThread().getName() + " charged battery by " + amount
 							+ ", current charge: " + currentCharge);
+					 
 				} else {
 					currentCharge = capacity;
 					System.out.println("Battery full! Current charge: " + currentCharge);
@@ -74,18 +74,17 @@ public class Battery {
 	}
 
 	public synchronized void useEnergy(int amount) {
-		if (amount <= 0) {
-			System.err.println("Amount charge is invalid!");
-			return;
-		}
-		if (currentCharge >= amount) {
-			currentCharge -= amount;
-			System.out.println(
-					Thread.currentThread().getName() + " used " + amount + ", remaining charge: " + currentCharge);
-		} else {
-			currentCharge = 0;
-			System.out.println("Overload prevented! Insufficient charge.");
-		}
+	    if (amount <= 0) {
+	        System.err.println("Amount to use is invalid!");
+	        return;
+	    }
+	    if (currentCharge >= amount) {
+	        currentCharge -= amount;
+	        System.out.println(Thread.currentThread().getName() + " used " + amount + ", remaining charge: " + currentCharge);
+	        notifyAll(); // Notify charging threads when energy has been used
+	    } else {
+	        System.out.println("Overload prevented! Insufficient charge.");
+	    }
 	}
 
 	public double getCurrentCharge() {

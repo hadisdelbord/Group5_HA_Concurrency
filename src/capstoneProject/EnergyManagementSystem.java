@@ -27,6 +27,8 @@ public class EnergyManagementSystem {
 		System.out.println("9. Create Battery");
 		System.out.println("10. List of Batteries");
 		System.out.println("11. Connect Energy Source to Battery");
+        System.out.println("12. Start Charging Battery");
+        System.out.println("13. Create and Start Energy Users");
 		System.out.println("0. Exit");
 		System.out.print("? ");
 	}
@@ -214,6 +216,40 @@ public class EnergyManagementSystem {
 					b.charge();
 
 					break;
+					
+				case 12:
+                    System.out.print("Enter name of Battery to start charging: ");
+                    String batteryToChargeName = scanner.nextLine();
+                    Battery batteryToCharge = batteries.stream()
+                            .filter(bat -> bat.getName().equals(batteryToChargeName))
+                            .findFirst().orElse(null);
+                    if (batteryToCharge == null) {
+                        System.out.println("The battery not found!");
+                        break;
+                    }
+
+                    new Thread(() -> batteryToCharge.charge(), "Charger").start();
+                    break;
+
+                case 13:
+                    System.out.print("Enter name of Battery to use: ");
+                    String batteryForUsageName = scanner.nextLine();
+                    Battery batteryForUsage = batteries.stream()
+                            .filter(bat -> bat.getName().equals(batteryForUsageName))
+                            .findFirst().orElse(null);
+                    if (batteryForUsage == null) {
+                        System.out.println("The battery not found!");
+                        break;
+                    }
+
+                    Thread user1 = new Thread(new EnergyUser(batteryForUsage, 20), "User1");
+                    Thread user2 = new Thread(new EnergyUser(batteryForUsage, 15), "User2");
+                    Thread user3 = new Thread(new EnergyUser(batteryForUsage, 25), "User3");
+
+                    user1.start();
+                    user2.start();
+                    user3.start();
+                    break;	
 
 				case 0:
 					System.out.println("Have a good day :)!");
