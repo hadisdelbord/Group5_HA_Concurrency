@@ -1,3 +1,5 @@
+package capstoneProject;
+
 public class EnergyUser implements Runnable {
     private Battery battery;
     private int usageAmount;
